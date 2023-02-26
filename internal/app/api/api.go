@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"simplewebserver/storage"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -13,6 +14,8 @@ type API struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
+	// Field for BD
+	storage *storage.Storage
 }
 
 // API constructor: build base API instance
@@ -34,5 +37,11 @@ func (api *API) Start() error {
 
 	// Configure mux (router)
 	api.configureRouterField()
+
+	// Configure storage
+	if err := api.configStorageField(); err != nil {
+		return err
+	}
+
 	return http.ListenAndServe(api.config.BindAddr, api.router)
 }

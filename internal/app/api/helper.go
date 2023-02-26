@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"simplewebserver/storage"
 
 	"github.com/sirupsen/logrus"
 )
@@ -21,4 +22,15 @@ func (a *API) configureRouterField() {
 	a.router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello there!"))
 	})
+}
+
+// Configurating DB repository (storage API)
+func (a *API) configStorageField() error {
+	storage := storage.New(a.config.Storage)
+	// Connect to DB if possible, or throw error
+	if err := storage.Open(); err != nil {
+		return err
+	}
+	a.storage = storage
+	return nil
 }

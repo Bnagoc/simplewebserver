@@ -13,7 +13,7 @@ var (
 )
 
 func init() {
-	// Set paath before start app from cmd
+	// Set path before start app from cmd
 	flag.StringVar(&configPath, "path", "configs/api.toml", "path to config file in .toml format")
 }
 
