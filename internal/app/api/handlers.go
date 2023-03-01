@@ -119,6 +119,7 @@ func (api *API) GetArticleById(writer http.ResponseWriter, req *http.Request) {
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
+
 	if !ok {
 		api.logger.Info("Can not find article with this ID")
 		msg := Message{
@@ -196,7 +197,7 @@ func (api *API) DeleteArticleById(writer http.ResponseWriter, req *http.Request)
 		return
 	}
 
-	writer.WriteHeader(501)
+	writer.WriteHeader(202)
 	msg := Message{
 		StatusCode: 202,
 		Message:    fmt.Sprintf("Article with ID %d deleted.", id),
@@ -239,7 +240,7 @@ func (api *API) PostUserRegister(writer http.ResponseWriter, req *http.Request) 
 	}
 
 	// Does not register if user already exists
-	if !ok {
+	if ok {
 		api.logger.Info("User with that ID already exists", err)
 		msg := Message{
 			StatusCode: 400,

@@ -17,7 +17,7 @@ var (
 
 // Add Article in DB
 func (ar *ArticleRepository) Create(a *models.Article) (*models.Article, error) {
-	query := fmt.Sprintf("INSERT INTO %s (title, author, content) VALUSE ($1, $2, $3) RETURNING ID", tableArticle)
+	query := fmt.Sprintf("INSERT INTO %s (title, author, content) VALUES ($1, $2, $3) RETURNING ID", tableArticle)
 	if err := ar.storage.db.QueryRow(query, a.Title, a.Author, a.Content).Scan(&a.ID); err != nil {
 		return nil, err
 	}
@@ -52,9 +52,9 @@ func (ar *ArticleRepository) FindArticleById(id int) (*models.Article, bool, err
 		if a.ID == id {
 			articleFound = a
 			founded = true
-			break
 		}
 	}
+
 	return articleFound, founded, nil
 }
 

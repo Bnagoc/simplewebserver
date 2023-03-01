@@ -25,9 +25,9 @@ func New(config *Config) *Storage {
 }
 
 // Open connection method
-func (storage *Storage) Open() error {
+func (s *Storage) Open() error {
 	// Validate agrs (sql.Open())
-	db, err := sql.Open("postgres", storage.config.DatabaseURI)
+	db, err := sql.Open("postgres", s.config.DatabaseURI)
 	if err != nil {
 		return err
 	}
@@ -35,14 +35,14 @@ func (storage *Storage) Open() error {
 	if err := db.Ping(); err != nil {
 		return err
 	}
-	storage.db = db
+	s.db = db
 	log.Println("DB connection created successfully!")
 	return nil
 }
 
 // Close connection method
-func (storage *Storage) Close() {
-	storage.db.Close()
+func (s *Storage) Close() {
+	s.db.Close()
 }
 
 // Public repo for Article
@@ -53,7 +53,7 @@ func (s *Storage) Article() *ArticleRepository {
 	s.articleRepository = &ArticleRepository{
 		storage: s,
 	}
-	return nil
+	return s.articleRepository
 }
 
 // Public repo for User
@@ -64,5 +64,5 @@ func (s *Storage) User() *UserRepository {
 	s.userRepository = &UserRepository{
 		storage: s,
 	}
-	return nil
+	return s.userRepository
 }

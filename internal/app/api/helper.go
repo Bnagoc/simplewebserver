@@ -33,11 +33,11 @@ func (a *API) configureRouterField() {
 
 // Configurating DB repository (storage API)
 func (a *API) configStorageField() error {
-	storage := storage.New(a.config.Storage)
+	st := storage.New(a.config.Storage)
 	// Connect to DB if possible, or throw error
-	if err := storage.Open(); err != nil {
+	if err := st.Open(); err != nil {
 		return err
 	}
-	a.storage = storage
+	a.storage = st
 	return nil
 }
